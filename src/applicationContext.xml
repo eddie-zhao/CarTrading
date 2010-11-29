@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<import resource="spring-service.xml"/>
+	<import resource="spring-access.xml"/>
+	<bean id="userAction" class="action.UserAction" scope="prototype">
+		<property name="userService" ref="userService"/>
+	</bean>
+	<bean id="vehicleAction" class="action.VehicleAction" scope="prototype">
+		<property name="vehicleService" ref="vehicleService"/>
+		<property name="scheduleService" ref="scheduleService"/>
+	</bean>
+</beans>

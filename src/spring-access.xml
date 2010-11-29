@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	<bean id="loginValidator" class="validation.LoginValidator"/>
+	<bean id="adminValidator" class="validation.AdminValidator"/>
+	<bean id="buyerValidator" class="validation.BuyerValidator"/>
+	<bean id="exceptionAdvice" class="validation.ExceptionAdvice"/>
+	<aop:config proxy-target-class="true">
+		<!-- All method end with 'Action' requires login -->
+		<aop:pointcut id="loginRequired" expression="execution(public String action.*Action.*Action())"/>
+		<!-- exception -->
+		<aop:pointcut id="exceptionPoint" expression="execution(public String action.*Action.*Action())"/>
+		<!-- access definition -->
+		<aop:pointcut id="editUser" expression="execution(public String action.UserAction.editUserAction())"/>
+		<aop:pointcut id="listUsers" expression="execution(public String action.UserAction.listUsersAction())"/>
+		<aop:pointcut id="addUser" expression="execution(public String action.UserAction.addUserAction())"/>
+		<aop:pointcut id="updateUser" expression="execution(public String action.UserAction.updateUserAction())"/>
+		<aop:pointcut id="saveUser" expression="execution(public String action.UserAction.saveUserAction())"/>
+		<aop:pointcut id="listVehicles" expression="execution(public String action.VehicleAction.listVehiclesAction())"/>
+		<aop:pointcut id="editVehicle" expression="execution(public String action.VehicleAction.editVehicleAction())"/>
+		<!-- exception handler -->
+		<aop:advisor advice-ref="exceptionAdvice" pointcut-ref="exceptionPoint"/>
+		<!-- Login -->
+		<aop:advisor advice-ref="loginValidator" pointcut-ref="loginRequired"/>
+		<!-- ADMIN group -->
+		<aop:advisor advice-ref="adminValidator" pointcut-ref="editUser"/>
+		<aop:advisor advice-ref="adminValidator" pointcut-ref="listUsers"/>
+		<aop:advisor advice-ref="adminValidator" pointcut-ref="addUser"/>
+		<aop:advisor advice-ref="adminValidator" pointcut-ref="saveUser"/>
+		<aop:advisor advice-ref="adminValidator" pointcut-ref="updateUser"/>
+		<aop:advisor advice-ref="adminValidator" pointcut-ref="listVehicles"/>
+		<aop:advisor advice-ref="adminValidator" pointcut-ref="editVehicle"/>
+		<!-- BUYER group -->
+<!--		<aop:advisor advice-ref="buyerValidator" pointcut-ref="listBiddingVehicles"/>-->
+	</aop:config>
+</beans>

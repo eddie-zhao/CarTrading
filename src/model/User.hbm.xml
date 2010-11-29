@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="model.User" table="USERS">
+        <id name="id" type="int" unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="loginName" type="string" />
+        <property name="name" type="string" />
+        <property name="password" type="string" />
+        <property name="regTime" type="java.util.Date" />
+        <property name="group" column="gid" type="model.GroupType" />
+        <set name="vehicles" cascade="all-delete-orphan" inverse="true">
+        	<key column="uid"/>
+        	<one-to-many class="model.Vehicle"/>
+        </set>
+    </class>
+</hibernate-mapping>
